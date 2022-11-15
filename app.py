@@ -11,31 +11,56 @@ from PIL import ImageFont
 
 
 """ Pillowによる画像への描画 """
-# pathを格納する
+# pathを格納する(元画像)
 use_image_file_pillow = "images/konjikido_01.jpg"
-# ファイルを開く
+
+# ファイルを開く(元画像)
 img_pillow = Image.open(use_image_file_pillow)
-# resize
+
+# resizeしたファイルを再度格納
 img_resize_lanczos = img_pillow.resize((1400, 730), Image.LANCZOS)
+
+# resizeファイルを保存
 img_resize_lanczos.save("images/resize_pillow_konjikido_01.jpg")
-# img_resize = img_pillow.resize((1400, 730))
-# img_resize.save("images/resize_pillow_konjikido_01.jpg")
 
 # Drawオブジェクトを生成
 draw_pillow = ImageDraw.Draw(img_resize_lanczos)
 
-# フォントオブジェクト生成
+# フォントオブジェクトを生成
 font = ImageFont.truetype("C:/Windows/Fonts/HGRPRE.TTC", 100)
 
-# draw_pillow.text((500, 500), "平泉 最高", "red")
-draw_pillow.multiline_text(
-    (500, 300),
-    "平泉 最高",
-    fill=(0, 255, 255),
-    font=font,
-    align="center",
-)
-img_resize_lanczos.save("images/result_pillow_konjikido_01.jpg")
+
+def drawing(img, text, fill, font, align):
+    """指定画像に対して、描画オプションを付与する
+    img: 描画対象画像のファイルパス
+    text: 描画テキスト
+    fill: カラー
+    font: フォント
+    align: 文字揃え
+    """
+    # 描画対象画像のheightとwidthを取得する
+    h1, w1 = img.size
+    # 指定テキストのheightとwidthを取得する
+    th2, tw2 = font.getsize(text)
+
+    # 描画
+    draw_pillow.multiline_text(
+        ((h1 - th2) // 2, (w1 - tw2) // 2),
+        text=text,
+        fill=fill,
+        font=font,
+        align=align,
+    )
+    # 描画後の保存
+    img.save("images/result_pillow_konjikido_01.jpg")
+
+
+def main():
+    drawing(img_resize_lanczos, "平泉 最高", (0, 255, 255), font, "center")
+
+
+if __name__ == "__main__":
+    main()
 
 
 """ ここから下はOpenCVによる画像への描画 """
