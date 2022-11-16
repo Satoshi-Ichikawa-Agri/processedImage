@@ -4,7 +4,6 @@ Pillowを用いて、以下のように画像を加工するプログラムを�
 ※ フォントは日本語が表示できれば自由に設定してよい
 ※「平泉 最高」の文字は画像の真ん中に表示すること
 """
-import cv2
 from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
